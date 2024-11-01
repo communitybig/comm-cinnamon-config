@@ -6,6 +6,6 @@ Target = usr/bin/cinnamon-session
 Target = usr/bin/startcinnamon-community
 
 [Action]
-Description = Substituir cinnamon-session com startcinnamon-community
+Description = Replace cinnamon-session with startcinnamon-community
 When = PostTransaction
 Exec = /usr/share/libalpm/scripts/startcinnamon-community

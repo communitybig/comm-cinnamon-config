@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Adiciona startcinnamon-community na sessão do Cinnamon
+# Adds startcinnamon-community to the Cinnamon session
 if [ "$(grep startcinnamon-community /usr/bin/cinnamon-session)" = "" ]; then
-    sed -i '/cinnamon-session-binary/i . /usr/bin/startcinnamon-community' /usr/bin/cinnamon-session
+    sed -i '/exec \/usr\/lib\/cinnamon-session\/cinnamon-session-binary/i . /usr/bin/startcinnamon-community' /usr/bin/cinnamon-session
 fi
