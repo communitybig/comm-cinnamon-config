@@ -64,7 +64,7 @@ gsettings set org.gnome.desktop.media-handling automount true
 
 # Configuration dconf
 # Base directory for configurations
-dconf_dir="$HOME/.config/dconf"
+config_dir="$HOME/.config/dconf-files"
 
 # Function to watch for changes and update backup files
 watch_for_changes() {
@@ -73,10 +73,10 @@ watch_for_changes() {
     # Watch for dconf changes and update backup files
     dconf watch / | while read -r line; do
         if [ "$desktop_env" = "cinnamon" ]; then
-            cp "$dconf_dir/user" "$dconf_dir/user.cinnamon"
+            dconf dump / > "$config_dir/settings.cinnamon"
             logger "Updated Cinnamon backup after change"
         else
-            cp "$dconf_dir/user" "$dconf_dir/user.default"
+            dconf dump / > "$config_dir/settings.default"
             logger "Updated default backup after change"
         fi
     done &
@@ -87,30 +87,28 @@ switch_dconf_config() {
     local desktop_env=$1
     
     # Create directory if it doesn't exist
-    mkdir -p "$dconf_dir"
+    mkdir -p "$config_dir"
     
-    # Initial setup - if user exists but user.default doesn't
-    if [ -f "$dconf_dir/user" ] && [ ! -f "$dconf_dir/user.default" ]; then
-        mv "$dconf_dir/user" "$dconf_dir/user.default"
+    # Initial setup - if settings.default doesn't exist, create it
+    if [ ! -f "$config_dir/settings.default" ]; then
+        dconf dump / > "$config_dir/settings.default"
     fi
     
     # If current session is Cinnamon
     if [ "$desktop_env" = "cinnamon" ]; then
-        if [ -f "$dconf_dir/user.cinnamon" ]; then
-            cp "$dconf_dir/user.cinnamon" "$dconf_dir/user"
+        if [ -f "$config_dir/settings.cinnamon" ]; then
+            dconf reset -f /
+            dconf load / < "$config_dir/settings.cinnamon"
             logger "Switched to Cinnamon dconf configuration"
         fi
     # If current session is not Cinnamon
     else
-        if [ -f "$dconf_dir/user.default" ]; then
-            cp "$dconf_dir/user.default" "$dconf_dir/user"
+        if [ -f "$config_dir/settings.default" ]; then
+            dconf reset -f /
+            dconf load / < "$config_dir/settings.default"
             logger "Switched to default dconf configuration"
         fi
     fi
-    
-    # Reload dconf settings
-    dconf reset -f /
-    dconf load / < "$dconf_dir/user"
     
     # Start watching for changes
     watch_for_changes "$desktop_env"
