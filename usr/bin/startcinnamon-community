@@ -64,6 +64,7 @@ gsettings set org.gnome.desktop.media-handling automount true
 
 # Configuration dconf
 # Base directory for configurations
+dconf_dir="$HOME/.config/dconf"
 config_dir="$HOME/.config/dconf-files"
 
 # Function to watch for changes and update backup files
@@ -86,22 +87,29 @@ watch_for_changes() {
 switch_dconf_config() {
     local desktop_env=$1
     
-    # Create directory if it doesn't exist
     mkdir -p "$config_dir"
     
-    # Initial setup - if settings.default doesn't exist, create it
-    if [ ! -f "$config_dir/settings.default" ]; then
-        dconf dump / > "$config_dir/settings.default"
+    # First boot detection - if only user and settings.cinnamon exist
+    if [ -f "$dconf_dir/user" ] && [ -f "$config_dir/settings.cinnamon" ] && \
+       [ ! -f "$dconf_dir/user.default" ] && [ ! -f "$config_dir/settings.default" ]; then
+        # Save original user as default
+        mv "$dconf_dir/user" "$dconf_dir/user.default"
+        # Clear dconf and load Cinnamon settings if we're in Cinnamon
+        if [ "$desktop_env" = "cinnamon" ]; then
+            dconf reset -f /
+            dconf load / < "$config_dir/settings.cinnamon"
+            logger "First boot: Loaded Cinnamon settings"
+        fi
+        return
     fi
     
-    # If current session is Cinnamon
+    # Normal operation after first boot
     if [ "$desktop_env" = "cinnamon" ]; then
         if [ -f "$config_dir/settings.cinnamon" ]; then
             dconf reset -f /
             dconf load / < "$config_dir/settings.cinnamon"
             logger "Switched to Cinnamon dconf configuration"
         fi
-    # If current session is not Cinnamon
     else
         if [ -f "$config_dir/settings.default" ]; then
             dconf reset -f /
