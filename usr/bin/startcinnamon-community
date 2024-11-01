@@ -66,41 +66,32 @@ gsettings set org.gnome.desktop.media-handling automount true
 # Base directory for configurations
 dconf_dir="$HOME/.config/dconf"
 
-# Function to save current configuration before switching
-save_current_config() {
+# Function to watch for changes and update backup files
+watch_for_changes() {
     local desktop_env=$1
     
-    if [ -f "$dconf_dir/user" ]; then
+    # Watch for dconf changes and update backup files
+    dconf watch / | while read -r line; do
         if [ "$desktop_env" = "cinnamon" ]; then
-            # Save current Cinnamon settings
             cp "$dconf_dir/user" "$dconf_dir/user.cinnamon"
-            logger "Saved current Cinnamon configuration"
+            logger "Updated Cinnamon backup after change"
         else
-            # Save current default desktop settings
             cp "$dconf_dir/user" "$dconf_dir/user.default"
-            logger "Saved current default configuration"
+            logger "Updated default backup after change"
         fi
-    fi
+    done &
 }
 
 # Function to switch dconf configurations
 switch_dconf_config() {
     local desktop_env=$1
-    local current_session_file="$dconf_dir/current_session"
     
     # Create directory if it doesn't exist
     mkdir -p "$dconf_dir"
     
-    # Check if we're already in the correct session
-    if [ -f "$current_session_file" ]; then
-        local previous_session=$(cat "$current_session_file")
-        if [ "$previous_session" != "$desktop_env" ]; then
-            # Save current config before switching
-            save_current_config "$previous_session"
-        else
-            # Same session, no need to switch
-            return
-        fi
+    # Initial setup - if user exists but user.default doesn't
+    if [ -f "$dconf_dir/user" ] && [ ! -f "$dconf_dir/user.default" ]; then
+        mv "$dconf_dir/user" "$dconf_dir/user.default"
     fi
     
     # If current session is Cinnamon
@@ -117,12 +108,12 @@ switch_dconf_config() {
         fi
     fi
     
-    # Store current session
-    echo "$desktop_env" > "$current_session_file"
-    
     # Reload dconf settings
     dconf reset -f /
     dconf load / < "$dconf_dir/user"
+    
+    # Start watching for changes
+    watch_for_changes "$desktop_env"
 }
 
 # Detect current desktop environment
