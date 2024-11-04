@@ -119,17 +119,20 @@ main() {
 main
 
 
-### Execute in LiveCD
-# if [ -e /usr/bin/startbiglive ]; then
-#     # Enables basic, unencrypted password storage in Chromium-based browsers
-#     sudo sed -i '/--password-store=basic/!s/\(exec \/usr\/lib\/brave-browser\/brave "$@" $USER_FLAGS\)$/\1 --password-store=basic/' /usr/bin/brave
-# 
+## Execute in LiveCD
+if [ -e /usr/bin/startbiglive ]; then
+    # Revert variables to Gnome
+    export DESKTOP_SESSION=cinnamon
+    export XDG_SESSION_DESKTOP=cinnamon
+    export XDG_CURRENT_DESKTOP=X-Cinnamon
+    export GDMSESSION=cinnamon
+
+    # Enables basic, unencrypted password storage in Chromium-based browsers
+    sudo sed -i '/--password-store=basic/!s/\(exec \/usr\/lib\/brave-browser\/brave "$@" $USER_FLAGS\)$/\1 --password-store=basic/' /usr/bin/brave
+
 #     # Removes unwanted files
 #     rm -f "$HOME/Empty Bash" "$HOME/Empty Desktop File.desktop" "$HOME/Empty File"
-# 
-#     # Updates user directories
-#     xdg-user-dirs-update
-# fi
 
-# Execute gnome-session
-# exec /usr/bin/gnome-session "$@"
+    # Updates user directories
+    LANG=$LANG xdg-user-dirs-update --force
+fi
