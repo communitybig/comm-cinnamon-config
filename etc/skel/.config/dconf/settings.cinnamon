@@ -180,6 +180,11 @@ window-size=(1203, 723)
 [org/nemo/desktop]
 font='Noto Sans Nerd Font Medium 11'
 
+[org/nemo/extensions/nemo-terminal]
+default-terminal-height=7
+default-visible=false
+terminal-position='bottom'
+
 [org/nemo/window-state]
 geometry='800x550+239+59'
 maximized=false
