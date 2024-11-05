@@ -2,7 +2,7 @@
 
 # Defining the default visual style to be used in applications that use Qt
 [[ -z $QT_STYLE_OVERRIDE ]] && export QT_STYLE_OVERRIDE="kvantum"
-[[ -z $QT_QPA_PLATFORMTHEME ]] && export QT_QPA_PLATFORMTHEME="gnome"
+[[ -z $QT_QPA_PLATFORMTHEME ]] && export QT_QPA_PLATFORMTHEME="cinnamon"
 [[ -z $QT_WAYLAND_DECORATION ]] && export QT_WAYLAND_DECORATION="adwaita"
 
 # Apps in electron use wayland
