@@ -2,6 +2,17 @@
 enabled-applets=['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']
 next-applet-id=15
 
+[org/cinnamon/desktop/a11y/applications]
+screen-keyboard-enabled=false
+screen-reader-enabled=false
+
+[org/cinnamon/desktop/a11y/mouse]
+dwell-click-enabled=false
+dwell-threshold=10
+dwell-time=1.2
+secondary-click-enabled=false
+secondary-click-time=1.2
+
 [org/cinnamon/desktop/background]
 picture-options='zoom'
 picture-uri='file:///usr/share/wallpapers/animal-owl4.avif'
@@ -16,6 +27,7 @@ font-name='Noto Sans Nerd Font Medium 11'
 gtk-theme='Big-Orange'
 icon-theme='bigicons-papient-dark'
 text-scaling-factor=1.0
+toolkit-accessibility=false
 
 [org/cinnamon/desktop/sound]
 event-sounds=false
@@ -86,6 +98,7 @@ icon-theme='bigicons-papient'
 menubar-accel='F10'
 menubar-detachable=false
 menus-have-tearoff=false
+monospace-font-name='Noto Sans Mono Medium 12'
 scaling-factor=uint32 0
 text-scaling-factor=1.0
 toolbar-detachable=false
@@ -144,6 +157,26 @@ disabled-gtk-modules=@as []
 enabled-gtk-modules=@as []
 overrides=@a{sv} {}
 
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+bold-is-bright=true
+default-size-columns=110
+use-system-font=true
+visible-name='Community'
+
+[org/gtk/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=false
+show-size-column=true
+show-type-column=true
+sidebar-width=178
+sort-column='name'
+sort-directories-first=false
+sort-order='ascending'
+type-format='category'
+window-position=(38, 0)
+window-size=(1203, 723)
+
 [org/nemo/desktop]
 font='Noto Sans Nerd Font Medium 11'
 
@@ -152,3 +185,21 @@ geometry='800x550+239+59'
 maximized=false
 sidebar-bookmark-breakpoint=0
 start-with-sidebar=true
+
+[org/x/editor/plugins]
+active-plugins=['wordcompletion', 'time', 'textsize', 'spell', 'sort', 'open-uri-context-menu', 'modelines', 'joinlines', 'filebrowser', 'docinfo', 'bracketcompletion']
+
+[org/x/editor/plugins/filebrowser/on-load]
+root='file:///'
+tree-view=true
+virtual-root='file:///home/community/.config/cinnamon/spices/menu@cinnamon.org'
+
+[org/x/editor/preferences/editor]
+bracket-matching=true
+create-backup-copy=true
+display-line-numbers=true
+highlight-current-line=true
+scheme='kate'
+
+[org/x/editor/preferences/ui]
+statusbar-visible=true
