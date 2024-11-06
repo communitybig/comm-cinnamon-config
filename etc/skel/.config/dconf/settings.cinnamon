@@ -204,7 +204,7 @@ bracket-matching=true
 create-backup-copy=true
 display-line-numbers=true
 highlight-current-line=true
-scheme='kate'
+scheme='solarized-dark'
 
 [org/x/editor/preferences/ui]
 statusbar-visible=true
