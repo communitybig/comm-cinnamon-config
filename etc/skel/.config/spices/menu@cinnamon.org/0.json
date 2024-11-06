@@ -79,17 +79,17 @@
         "default": false,
         "description": "Use a custom icon and label",
         "tooltip": "Check this to specify a custom icon and label",
-        "value": true
+        "value": false
     },
     "menu-icon": {
         "type": "iconfilechooser",
-        "default": "cinnamon-symbolic",
+        "default": "comm-menu",
         "description": "Icon",
         "tooltip": "Select an icon to show in the panel.",
-        "default_icon": "cinnamon-symbolic",
+        "default_icon": "comm-menu",
         "dependency": "menu-custom",
-        "value": "/usr/share/pixmaps/comm-menu.svg"
-    },
+        "value": "comm-menu"
+    }
     "menu-icon-size": {
         "type": "spinbutton",
         "default": 32,
