@@ -20,7 +20,7 @@ picture-uri='file:///usr/share/backgrounds/community/animal-owl4.jpeg'
 
 [org/cinnamon/desktop/background/slideshow]
 delay=15
-image-source='directory:///usr/share/backgrounds/community'
+image-source='directory:///usr/share/gnome-background-properties/community-cinnamon.xml'
 
 [org/cinnamon/desktop/interface]
 cursor-theme='Bibata-Modern-Classic'
