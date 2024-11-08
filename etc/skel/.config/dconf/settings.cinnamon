@@ -16,11 +16,11 @@ secondary-click-time=1.2
 
 [org/cinnamon/desktop/background]
 picture-options='zoom'
-picture-uri='file:///usr/share/wallpapers/animal-owl4.avif'
+picture-uri='file:///usr/share/backgrounds/community/animal-owl4.jpeg'
 
 [org/cinnamon/desktop/background/slideshow]
 delay=15
-image-source='xml:///usr/share/gnome-background-properties/community-gnome.xml'
+image-source='directory:///usr/share/backgrounds/community'
 
 [org/cinnamon/desktop/interface]
 cursor-theme='Bibata-Modern-Classic'
