@@ -1,0 +1,9 @@
+{
+    "uuid": "Cinnamenu@json",
+    "name": "Cinnamenu",
+    "version": "15.0.0",
+    "description": "A flexible menu providing grid or list views, web bookmarks, search provider, emoji search and calculator",
+    "multiversion": true,
+    "max-instances": 2,
+    "author": "linuxmint"
+}
