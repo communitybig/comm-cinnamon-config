@@ -2,14 +2,11 @@
 # This file contains scripts that are executed at different stages of package installation/upgrade/removal
 
 # Function executed before package installation
-# pre_install() {
-#     echo "Preparing to install the package..."
-    # Example: Check for system dependencies
-    # if ! command -v required_command &> /dev/null; then
-    #     echo "Error: required_command not found. Please install it before continuing."
-    #     exit 1
-    # fi
-# }
+pre_install() {
+    if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py ]; then
+        mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak
+    fi
+}
 
 # Function executed after package installation
 # post_install() {
@@ -52,11 +49,8 @@
 # }
 
 # Function executed after package removal
-# post_remove() {
-#     echo "Cleaning up after package removal..."
-    # Example: Remove data directories created by the package
-    # rm -rf /var/lib/mypackage
-
-#     echo "If you want to remove all user data, run:"
-#     echo "rm -rf /home/*/mypackage_data"
-# }
+post_remove() {
+    if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak ]; then
+        mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py
+    fi
+}
