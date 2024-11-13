@@ -3,22 +3,22 @@
 
 # Function executed before package installation
 pre_install() {
-    if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py ]; then
-        mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak
-    fi
+   # Check if original file exists
+   if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py ]; then
+       # If exists and is not already a backup, create backup
+       if [ ! -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak ]; then
+           mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak
+       fi
+   fi
 }
 
 # Function executed after package installation
-# post_install() {
-#     echo "Configuring the package after installation..."
-    # Example: Create a configuration directory
-    # mkdir -p /etc/mypackage
-    # chmod 755 /etc/mypackage
-
-    # Example: Start a service
-    # systemctl enable myservice.service
-    # systemctl start myservice.service
-# }
+post_install() {
+   # Rename our file to the correct name
+   if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.new ]; then
+       mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.new /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py
+   fi
+}
 
 # Function executed before package upgrade
 # pre_upgrade() {
@@ -50,7 +50,8 @@ pre_install() {
 
 # Function executed after package removal
 post_remove() {
-    if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak ]; then
-        mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py
-    fi
+   # Restore original backup
+   if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak ]; then
+       mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.bak /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py
+   fi
 }
