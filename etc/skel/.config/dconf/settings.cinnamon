@@ -35,6 +35,10 @@ icon-theme='bigicons-papient-dark'
 text-scaling-factor=1.0
 toolkit-accessibility=false
 
+[org/cinnamon/desktop/notifications]
+bottom-notifications=true
+notification-duration=4
+
 [org/cinnamon/desktop/sound]
 event-sounds=false
 
