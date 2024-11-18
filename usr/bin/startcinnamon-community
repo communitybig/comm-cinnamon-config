@@ -61,7 +61,7 @@ if [ -e "$HOME/.config/ledkeyboard" ]; then
 fi
 
 # Define the correct dconf path based on desktop environment
-if [[ "$XDG_CURRENT_DESKTOP" = *"Cinnamon" ]]; then
+if [[ "$XDG_SESSION_DESKTOP" = "cinnamon" ]]; then
     dconfPath=/org/cinnamon/desktop/interface/cursor-theme
 else
     dconfPath=/org/gnome/desktop/interface/cursor-theme
@@ -79,64 +79,96 @@ fi
 # Enable automatic mounting of devices
 gsettings set org.gnome.desktop.media-handling automount true
 
-
 # START Configuration dconf
 # Base directory for configurations
 dconf_dir="$HOME/.config/dconf"
+log_file="/tmp/dconf-switch.log"
+
+# Function to log messages
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$log_file"
+}
 
 # Function to switch dconf configurations between desktop environments
 switch_dconf_config() {
     local desktop_env=$1
     
-    # First boot detection - if we have user and settings.cinnamon
-    if [ -f "$dconf_dir/user" ] && [ -f "$dconf_dir/settings.cinnamon" ] && \
-       [ ! -f "$dconf_dir/user.default" ]; then
-        # Save original user as default
-        mv "$dconf_dir/user" "$dconf_dir/user.default"
-        dconf reset -f /
-        dconf load / < "$dconf_dir/settings.cinnamon"
-        logger "First boot: Configured Cinnamon settings"
+    # Ensure directory exists
+    mkdir -p "$dconf_dir"
+    
+    # Clear old log
+    echo "" > "$log_file"
+    chmod 666 "$log_file"  # Garantir permissões de leitura/escrita
+    
+    # Debug logs
+    log_message "Script started"
+    log_message "Desktop Environment: $desktop_env"
+    log_message "XDG_CURRENT_DESKTOP: $XDG_CURRENT_DESKTOP"
+    
+    # Kill any existing dconf-watch processes
+    if pgrep -f "dconf watch /" > /dev/null; then
+        log_message "Killing existing dconf watch processes"
+        pkill -f "dconf watch /"
+        sleep 1
     fi
 
-    # Kill any existing dconf-watch processes
-    pkill -f "dconf watch /"
-
-    # Normal operation after first boot
     if [ "$desktop_env" = "cinnamon" ]; then
-        # Load latest Cinnamon configuration
-        dconf reset -f /
-        dconf load / < "$dconf_dir/settings.cinnamon"
+        log_message "Detected Cinnamon environment"
         
-        # Monitor only Cinnamon changes
-        dconf watch / | while read -r line; do
-            # Save only to Cinnamon settings when in Cinnamon
-            dconf dump / > "$dconf_dir/settings.cinnamon"
-        done &
-    else
-        # Before switching to GNOME, save current settings to appropriate file
+        # Load latest Cinnamon configuration
         if [ -f "$dconf_dir/settings.cinnamon" ]; then
-            dconf dump / > "$dconf_dir/settings.cinnamon"
+            log_message "Loading existing Cinnamon settings"
+            dconf reset -f /
+            dconf load / < "$dconf_dir/settings.cinnamon"
+        else
+            log_message "No existing Cinnamon settings found"
         fi
         
-        # If GNOME settings exist, load them
+        # Monitor Cinnamon changes in a separate process
+        (
+            log_message "Starting Cinnamon settings monitor"
+            while true; do
+                dconf watch / | while read -r change; do
+                    log_message "Change detected: $change"
+                    log_message "Saving to: $dconf_dir/settings.cinnamon"
+                    dconf dump / > "$dconf_dir/settings.cinnamon.tmp" && \
+                    mv "$dconf_dir/settings.cinnamon.tmp" "$dconf_dir/settings.cinnamon"
+                done
+            done
+        ) &
+        echo $! > "/tmp/dconf-watch.pid"
+        
+    else
+        log_message "Detected non-Cinnamon environment"
+        
+        # Load default settings
         if [ -f "$dconf_dir/settings.default" ]; then
+            log_message "Loading default settings"
             dconf reset -f /
             dconf load / < "$dconf_dir/settings.default"
-        else
-            # First time in GNOME, use original default configuration
-            cp "$dconf_dir/user.default" "$dconf_dir/user"
         fi
         
-        # Monitor GNOME changes
-        dconf watch / | while read -r line; do
-            dconf dump / > "$dconf_dir/settings.default"
-        done &
+        # Monitor changes
+        (
+            log_message "Starting default settings monitor"
+            while true; do
+                dconf watch / | while read -r change; do
+                    log_message "Change detected: $change"
+                    log_message "Saving to: $dconf_dir/settings.default"
+                    dconf dump / > "$dconf_dir/settings.default.tmp" && \
+                    mv "$dconf_dir/settings.default.tmp" "$dconf_dir/settings.default"
+                done
+            done
+        ) &
+        echo $! > "/tmp/dconf-watch.pid"
     fi
 }
 
 # Detect current desktop environment
 detect_desktop_env() {
-    if [[ "$XDG_CURRENT_DESKTOP" = *"Cinnamon"* ]]; then
+    if [[ "$XDG_CURRENT_DESKTOP" = *"Cinnamon"* ]] || \
+       [[ "$DESKTOP_SESSION" = "cinnamon" ]] || \
+       [[ "$XDG_SESSION_DESKTOP" = "cinnamon" ]]; then
         echo "cinnamon"
     else
         echo "default"
@@ -146,6 +178,7 @@ detect_desktop_env() {
 # Main execution
 main() {
     current_desktop=$(detect_desktop_env)
+    log_message "Detected desktop: $current_desktop"
     switch_dconf_config "$current_desktop"
 }
 
