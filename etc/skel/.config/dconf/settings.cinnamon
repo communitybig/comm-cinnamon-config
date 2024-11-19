@@ -44,7 +44,9 @@ event-sounds=false
 
 [org/cinnamon/desktop/wm/preferences]
 min-window-opacity=30
+num-workspaces=3
 titlebar-font='Noto Sans Nerd Font Medium 11'
+workspace-names=@as []
 
 [org/cinnamon/gestures]
 swipe-down-2='PUSH_TILE_DOWN::end'
