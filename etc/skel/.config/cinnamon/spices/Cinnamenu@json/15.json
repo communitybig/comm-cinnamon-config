@@ -145,16 +145,16 @@
         "value": [
             "all",
             "Accessories",
-            "Biglinux",
-            "Office",
+            "Administration",
+            "Big Apps",
+            "Games",
             "Graphics",
             "Internet",
-            "Games",
             "Multimedia",
+            "Office",
             "Other",
-            "Webapps",
-            "Administration",
             "Preferences",
+            "Webapps",
             "favorite_apps"
         ]
     },
