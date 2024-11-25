@@ -1,4 +1,7 @@
 [Default Applications]
+# File Manager
+inode/directory=nemo.desktop
+
 # Browser Web
 x-scheme-handler/http=brave-browser.desktop
 x-scheme-handler/https=brave-browser.desktop
@@ -155,6 +158,9 @@ application/vnd.ms-powerpoint=libreoffice-impress.desktop
 application/rtf=libreoffice-writer.desktop
 
 [Added Associations]
+# File Manager
+inode/directory=nemo.desktop
+
 # Browser Web
 x-scheme-handler/http=brave-browser.desktop
 x-scheme-handler/https=brave-browser.desktop
