@@ -199,4 +199,8 @@ if [ -e /usr/bin/startbiglive ]; then
 
     # Updates user directories
     LANG=$LANG xdg-user-dirs-update --force
+    
+    # Disable the lock screen and screensaver
+    gsettings set org.cinnamon.desktop.screensaver lock-enabled false
+    gsettings set org.cinnamon.desktop.screensaver idle-activation-enabled false
 fi
