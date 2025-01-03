@@ -65,6 +65,7 @@ tap-3='MEDIA_PLAY_PAUSE::end'
 
 [org/cinnamon/muffin]
 draggable-border-width=10
+unredirect-fullscreen-windows=true
 
 [org/cinnamon/theme]
 name='Big-Orange'
