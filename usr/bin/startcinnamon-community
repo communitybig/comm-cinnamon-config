@@ -187,7 +187,7 @@ main
 # END Configuration dconf
 
 # Force nm-applet to start
-nm-applet &
+# nm-applet &
 
 ## Execute in LiveCD
 if [ -e /usr/bin/startbiglive ]; then
