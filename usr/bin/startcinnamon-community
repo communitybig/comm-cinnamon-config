@@ -186,9 +186,6 @@ main() {
 main
 # END Configuration dconf
 
-# Force nm-applet to start
-# nm-applet &
-
 ## Execute in LiveCD
 if [ -e /usr/bin/startbiglive ]; then
     # Revert variables to Gnome
