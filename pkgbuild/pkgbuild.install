@@ -18,6 +18,15 @@ post_install() {
    if [ -f /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.new ]; then
        mv /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py.new /usr/share/cinnamon/cinnamon-settings/modules/cs_keyboard.py
    fi
+   
+   # Modify icons in .desktop files
+    if [ -f /usr/share/applications/pamac-updates.desktop ]; then
+        sed -i 's/^Icon=.*/Icon=pamac-updater/' /usr/share/applications/pamac-updates.desktop
+    fi
+
+    if [ -f /usr/share/applications/hp-uiscan.desktop ]; then
+        sed -i 's/^Icon=.*/Icon=hp_logo/' /usr/share/applications/hp-uiscan.desktop
+    fi
 }
 
 # Function executed before package upgrade
