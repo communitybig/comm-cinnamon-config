@@ -123,7 +123,7 @@ application/x-ruby=org.x.editor.desktop
 application/x-desktop=xed.desktop
 
 # PDF and Documents (Evince)
-application/pdf=org.gnome.Evince.desktop
+application/pdf=xreader.desktop
 application/x-bzpdf=org.gnome.Evince.desktop
 application/x-gzpdf=org.gnome.Evince.desktop
 application/x-xzpdf=org.gnome.Evince.desktop
@@ -282,7 +282,7 @@ application/x-ruby=org.x.editor.desktop
 application/x-desktop=xed.desktop
 
 # PDF and Documents (Evince)
-application/pdf=org.gnome.Evince.desktop;
+application/pdf=org.gnome.Evince.desktop;xreader.desktop;
 application/x-bzpdf=org.gnome.Evince.desktop;
 application/x-gzpdf=org.gnome.Evince.desktop;
 application/x-xzpdf=org.gnome.Evince.desktop;
